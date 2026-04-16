@@ -40,6 +40,7 @@ export interface Settings {
     mono: string
     sans: string
     terminal: string
+    agentProgressIndicator: "border" | "bar"
   }
   keybinds: Record<string, string>
   permissions: {
@@ -124,6 +125,7 @@ const defaultSettings: Settings = {
     mono: "",
     sans: "",
     terminal: "",
+    agentProgressIndicator: "bar",
   },
   keybinds: {},
   permissions: {
@@ -250,6 +252,13 @@ export const { use: useSettings, provider: SettingsProvider } = createSimpleCont
         terminalFont: withFallback(() => store.appearance?.terminal, defaultSettings.appearance.terminal),
         setTerminalFont(value: string) {
           setStore("appearance", "terminal", value.trim() ? value : "")
+        },
+        agentProgressIndicator: withFallback(
+          () => store.appearance?.agentProgressIndicator,
+          defaultSettings.appearance.agentProgressIndicator,
+        ),
+        setAgentProgressIndicator(value: "border" | "bar") {
+          setStore("appearance", "agentProgressIndicator", value)
         },
       },
       keybinds: {
