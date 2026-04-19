@@ -2070,7 +2070,7 @@ export default function Layout(props: ParentProps) {
       <div
         data-surface="sidebar-panel"
         classList={{
-          "flex flex-col min-h-0 min-w-0 box-border px-3": true,
+          "flex flex-col min-h-0 min-w-0 box-border px-3 xl:rounded-tl-xl xl:rounded-bl-xl": !panelProps.mobile,
           "border-l border-t": merged(),
           "flex-1 min-w-0": panelProps.mobile,
           "max-w-full overflow-hidden": panelProps.mobile,
@@ -2472,7 +2472,7 @@ export default function Layout(props: ParentProps) {
               <main
                 data-component="main-surface"
                 classList={{
-                  "size-full overflow-x-hidden flex flex-col items-start contain-strict border-t xl:border-l": true,
+                  "size-full overflow-hidden flex flex-col items-start contain-strict border-t xl:border-l xl:rounded-tl-xl xl:rounded-bl-xl": true,
                 }}
                 style={{
                   "border-top-width": "var(--layout-divider-width, 1px)",
