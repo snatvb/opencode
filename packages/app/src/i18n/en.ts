@@ -762,6 +762,11 @@ export const dict = {
   "settings.general.row.editToolPartsExpanded.title": "Expand edit tool parts",
   "settings.general.row.editToolPartsExpanded.description":
     "Show edit, write, and patch tool parts expanded by default in the timeline",
+  "settings.general.row.agentProgressIndicator.title": "Agent progress indicator",
+  "settings.general.row.agentProgressIndicator.description":
+    "Choose how the agent's progress is shown during execution",
+  "settings.general.row.agentProgressIndicator.option.border": "Glowing border",
+  "settings.general.row.agentProgressIndicator.option.bar": "Top progress bar",
 
   "settings.general.row.wayland.title": "Use native Wayland",
   "settings.general.row.wayland.description": "Disable X11 fallback on Wayland. Requires restart.",
