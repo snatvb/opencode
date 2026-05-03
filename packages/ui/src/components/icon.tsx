@@ -1,6 +1,72 @@
-import { splitProps, type ComponentProps } from "solid-js"
+import { splitProps, type Component, type ComponentProps } from "solid-js"
+import Archive from "lucide-solid/icons/archive"
+import ArrowDownToLine from "lucide-solid/icons/arrow-down-to-line"
+import ArrowLeft from "lucide-solid/icons/arrow-left"
+import ArrowRight from "lucide-solid/icons/arrow-right"
+import ArrowUp from "lucide-solid/icons/arrow-up"
+import Ban from "lucide-solid/icons/ban"
+import Check from "lucide-solid/icons/check"
+import ChevronDown from "lucide-solid/icons/chevron-down"
+import ChevronLeft from "lucide-solid/icons/chevron-left"
+import ChevronRight from "lucide-solid/icons/chevron-right"
+import CircleCheck from "lucide-solid/icons/circle-check"
+import CircleQuestionMark from "lucide-solid/icons/circle-question-mark"
+import Code from "lucide-solid/icons/code"
+import CodeXml from "lucide-solid/icons/code-xml"
+import Copy from "lucide-solid/icons/copy"
+import CircleAlert from "lucide-solid/icons/circle-alert"
+import Diff from "lucide-solid/icons/diff"
+import Ellipsis from "lucide-solid/icons/ellipsis"
+import Download from "lucide-solid/icons/download"
+import Eye from "lucide-solid/icons/eye"
+import FolderPlus from "lucide-solid/icons/folder-plus"
+import FolderTree from "lucide-solid/icons/folder-tree"
+import GitFork from "lucide-solid/icons/git-fork"
+import Grid2x2 from "lucide-solid/icons/grid-2x2"
+import Glasses from "lucide-solid/icons/glasses"
+import Globe from "lucide-solid/icons/globe"
+import Hammer from "lucide-solid/icons/hammer"
+import Keyboard from "lucide-solid/icons/keyboard"
+import LayoutGrid from "lucide-solid/icons/layout-grid"
+import LayoutPanelLeft from "lucide-solid/icons/layout-panel-left"
+import Link from "lucide-solid/icons/link"
+import ListChecks from "lucide-solid/icons/list-checks"
+import ListTree from "lucide-solid/icons/list-tree"
+import Menu from "lucide-solid/icons/menu"
+import MoveRight from "lucide-solid/icons/move-right"
+import PanelBottom from "lucide-solid/icons/panel-bottom"
+import PanelBottomClose from "lucide-solid/icons/panel-bottom-close"
+import PanelBottomOpen from "lucide-solid/icons/panel-bottom-open"
+import PanelLeft from "lucide-solid/icons/panel-left"
+import PanelLeftClose from "lucide-solid/icons/panel-left-close"
+import PanelLeftOpen from "lucide-solid/icons/panel-left-open"
+import PanelRight from "lucide-solid/icons/panel-right"
+import PanelRightClose from "lucide-solid/icons/panel-right-close"
+import PanelRightOpen from "lucide-solid/icons/panel-right-open"
+import Plus from "lucide-solid/icons/plus"
+import Server from "lucide-solid/icons/server"
+import Undo2 from "lucide-solid/icons/undo-2"
+import Search from "lucide-solid/icons/search"
+import Settings from "lucide-solid/icons/settings"
+import Share2 from "lucide-solid/icons/share-2"
+import SlidersHorizontal from "lucide-solid/icons/sliders-horizontal"
+import SquareArrowOutUpRight from "lucide-solid/icons/square-arrow-out-up-right"
+import SquarePen from "lucide-solid/icons/square-pen"
+import SquareStop from "lucide-solid/icons/square-stop"
+import Terminal from "lucide-solid/icons/terminal"
+import Trash2 from "lucide-solid/icons/trash-2"
+import Undo from "lucide-solid/icons/undo"
+import X from "lucide-solid/icons/x"
 
-const icons = {
+import { useIconPreset } from "../context/icon-preset"
+import { MCP_ICON } from "./mcp-icon"
+import { shouldUseSoftIcon } from "./icon-soft"
+import { getIconViewBox } from "./icon-viewbox"
+import type { IconProps } from "./icon-types"
+
+export type { IconProps } from "./icon-types"
+
+const sharpIcons = {
   "align-right": `<path d="M12.292 6.04167L16.2503 9.99998L12.292 13.9583M2.91699 9.99998H15.6253M17.0837 3.75V16.25" stroke="currentColor" stroke-linecap="square"/>`,
   "arrow-up": `<path fill-rule="evenodd" clip-rule="evenodd" d="M9.99991 2.24121L16.0921 8.33343L15.2083 9.21731L10.6249 4.63397V17.5001H9.37492V4.63398L4.7916 9.21731L3.90771 8.33343L9.99991 2.24121Z" fill="currentColor"/>`,
   "arrow-left": `<path d="M8.33464 4.58398L2.91797 10.0007L8.33464 15.4173M3.33464 10.0007H17.0846" stroke="currentColor" stroke-linecap="square"/>`,
@@ -25,9 +91,8 @@ const icons = {
   terminal: `<path d="M6.5 8L8.64286 10L6.5 12M10.9286 12H13.5M2 18H18V2H2V18Z" stroke="currentColor" stroke-linecap="square"/>`,
   "terminal-active": `<path d="M2 18H18V2H2V18Z" fill="currentColor" fill-opacity="0.1"/>
 <path d="M6.5 8L8.64286 10L6.5 12M10.9286 12H13.5M2 18H18V2H2V18Z" stroke="currentColor" stroke-linecap="square"/>`,
-  review: `<path d="M7 14.5H13M7 7.99512H10.0049M10.0049 7.99512H13M10.0049 7.99512V5M10.0049 7.99512V11M18 18V2L2 2L2 18H18Z" stroke="currentColor"/>`,
-  "review-active": `<path d="M18 18V2L2 2L2 18H18Z" fill="currentColor" fill-opacity="0.1"/>
-<path d="M7 14.5H13M7 7.99512H10.0049M10.0049 7.99512H13M10.0049 7.99512V5M10.0049 7.99512V11M18 18V2L2 2L2 18H18Z" stroke="currentColor"/>`,
+  review: Diff,
+  "review-active": Diff,
   expand: `<path d="M4.58301 10.4163V15.4163H9.58301M10.4163 4.58301H15.4163V9.58301" stroke="currentColor" stroke-linecap="square"/>`,
   collapse: `<path d="M16.666 8.33398H11.666V3.33398" stroke="currentColor" stroke-linecap="square"/><path d="M8.33398 16.666V11.666H3.33398" stroke="currentColor" stroke-linecap="square"/>`,
   code: `<path d="M8.7513 7.5013L6.2513 10.0013L8.7513 12.5013M11.2513 7.5013L13.7513 10.0013L11.2513 12.5013M2.91797 2.91797H17.0846V17.0846H2.91797V2.91797Z" stroke="currentColor"/>`,
@@ -41,13 +106,15 @@ const icons = {
   "file-tree-active": `<path d="M2 2L2 18H5L6.5 8.5H18V5H9.5L7.5 2H2Z" fill="currentColor" fill-opacity="0.1"/>
 <path d="M5 18H18L19.5 8.5H18M5 18H2L2 2H7.5L9.5 5H18V8.5M5 18L6.5 8.5H18" stroke="currentColor" stroke-linecap="square"/>`,
   "magnifying-glass": `<path d="M13 13L10.6418 10.6418M11.9552 7.47761C11.9552 9.95053 9.95053 11.9552 7.47761 11.9552C5.0047 11.9552 3 9.95053 3 7.47761C3 5.0047 5.0047 3 7.47761 3C9.95053 3 11.9552 5.0047 11.9552 7.47761Z" stroke="currentColor" stroke-linecap="square" vector-effect="non-scaling-stroke"/>`,
+  globe: `<circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2.5"/><path d="M2 10H18M10 2C12.5 4.5 12.5 15.5 10 18C7.5 15.5 7.5 4.5 10 2ZM10 2C7.5 4.5 7.5 15.5 10 18C12.5 15.5 12.5 4.5 10 2Z" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="round"/>`,
   "plus-small": `<path d="M9.99984 5.41699V10.0003M9.99984 10.0003V14.5837M9.99984 10.0003H5.4165M9.99984 10.0003H14.5832" stroke="currentColor" stroke-linecap="square"/>`,
   plus: `<path d="M9.9987 2.20703V9.9987M9.9987 9.9987V17.7904M9.9987 9.9987H2.20703M9.9987 9.9987H17.7904" stroke="currentColor" stroke-linecap="square"/>`,
   "new-session": `<path d="M12 2H2V18H18V8M6 11.3818V14H8.61818L18 4.61818L15.3818 2L6 11.3818Z" stroke="currentColor"/>`,
   "new-session-active": `<path d="M6 11.3818V14H8.61818L18 4.61818L15.3818 2L6 11.3818Z" fill="currentColor" fill-opacity="0.1"/>
 <path d="M12 2H2V18H18V8M6 11.3818V14H8.61818L18 4.61818L15.3818 2L6 11.3818Z" stroke="currentColor"/>`,
   "pencil-line": `<path d="M9.58301 17.9166H17.9163M17.9163 5.83325L14.1663 2.08325L2.08301 14.1666V17.9166H5.83301L17.9163 5.83325Z" stroke="currentColor" stroke-linecap="square"/>`,
-  mcp: `<g><path d="M0.972656 9.37176L9.5214 1.60019C10.7018 0.527151 12.6155 0.527151 13.7957 1.60019C14.9761 2.67321 14.9761 4.41295 13.7957 5.48599L7.3397 11.3552" stroke="currentColor" stroke-linecap="round"/><path d="M7.42871 11.2747L13.7957 5.48643C14.9761 4.41338 16.8898 4.41338 18.0702 5.48643L18.1147 5.52688C19.2951 6.59993 19.2951 8.33966 18.1147 9.4127L10.3831 16.4414C9.98966 16.7991 9.98966 17.379 10.3831 17.7366L11.9707 19.1799" stroke="currentColor" stroke-linecap="round"/><path d="M11.6587 3.54346L5.33619 9.29119C4.15584 10.3642 4.15584 12.1039 5.33619 13.177C6.51649 14.25 8.43019 14.25 9.61054 13.177L15.9331 7.42923" stroke="currentColor" stroke-linecap="round"/></g>`,
+  mcp: MCP_ICON,
+  hammer: `<path d="M12.9167 2.91675L16.2501 6.25008V8.33341H12.9167L10.8334 10.4167L8.75008 8.33341L5.83341 11.2501L8.75008 14.1667L5.41675 17.5001L2.50008 14.5834L5.83341 11.2501L3.75008 9.16675L7.91675 5.00008H10.0001L12.9167 2.91675Z" fill="currentColor"/>`,
   glasses: `<path d="M0.416626 7.91667H1.66663M19.5833 7.91667H18.3333M11.866 7.57987C11.3165 7.26398 10.6793 7.08333 9.99996 7.08333C9.32061 7.08333 8.68344 7.26398 8.13389 7.57987M8.74996 10C8.74996 12.0711 7.07103 13.75 4.99996 13.75C2.92889 13.75 1.24996 12.0711 1.24996 10C1.24996 7.92893 2.92889 6.25 4.99996 6.25C7.07103 6.25 8.74996 7.92893 8.74996 10ZM18.75 10C18.75 12.0711 17.071 13.75 15 13.75C12.9289 13.75 11.25 12.0711 11.25 10C11.25 7.92893 12.9289 6.25 15 6.25C17.071 6.25 18.75 7.92893 18.75 10Z" stroke="currentColor" stroke-linecap="square"/>`,
   "magnifying-glass-menu": `<path d="M2.08325 10.0002H4.58325M2.08325 5.41683H5.41659M2.08325 14.5835H5.41659M16.4583 13.9585L18.7499 16.2502M17.9166 10.0002C17.9166 12.9917 15.4915 15.4168 12.4999 15.4168C9.50838 15.4168 7.08325 12.9917 7.08325 10.0002C7.08325 7.00862 9.50838 4.5835 12.4999 4.5835C15.4915 4.5835 17.9166 7.00862 17.9166 10.0002Z" stroke="currentColor" stroke-linecap="square"/>`,
   "window-cursor": `<path d="M17.9166 10.4167V3.75H2.08325V17.0833H10.4166M17.9166 13.5897L11.6666 11.6667L13.5897 17.9167L15.032 15.0321L17.9166 13.5897Z" stroke="currentColor" stroke-width="1.07143" stroke-linecap="square"/><path d="M5.00024 6.125C5.29925 6.12518 5.54126 6.36795 5.54126 6.66699C5.54108 6.96589 5.29914 7.20783 5.00024 7.20801C4.7012 7.20801 4.45843 6.966 4.45825 6.66699C4.45825 6.36784 4.70109 6.125 5.00024 6.125ZM7.91626 6.125C8.21541 6.125 8.45825 6.36784 8.45825 6.66699C8.45808 6.966 8.21531 7.20801 7.91626 7.20801C7.61736 7.20783 7.37542 6.96589 7.37524 6.66699C7.37524 6.36795 7.61726 6.12518 7.91626 6.125ZM10.8333 6.125C11.1324 6.125 11.3752 6.36784 11.3752 6.66699C11.3751 6.966 11.1323 7.20801 10.8333 7.20801C10.5342 7.20801 10.2914 6.966 10.2913 6.66699C10.2913 6.36784 10.5341 6.125 10.8333 6.125Z" fill="currentColor" stroke="currentColor" stroke-width="0.25" stroke-linecap="square"/>`,
@@ -102,30 +169,130 @@ const icons = {
   link: `<path d="M2.08334 12.0833L1.72979 11.7298L1.37624 12.0833L1.72979 12.4369L2.08334 12.0833ZM7.91668 17.9167L7.56312 18.2702L7.91668 18.6238L8.27023 18.2702L7.91668 17.9167ZM17.9167 7.91666L18.2702 8.27022L18.6238 7.91666L18.2702 7.56311L17.9167 7.91666ZM12.0833 2.08333L12.4369 1.72977L12.0833 1.37622L11.7298 1.72977L12.0833 2.08333ZM8.39646 5.06311L8.0429 5.41666L8.75001 6.12377L9.10356 5.77021L8.75001 5.41666L8.39646 5.06311ZM5.77023 9.10355L6.12378 8.74999L5.41668 8.04289L5.06312 8.39644L5.41668 8.74999L5.77023 9.10355ZM14.2298 10.8964L13.8762 11.25L14.5833 11.9571L14.9369 11.6035L14.5833 11.25L14.2298 10.8964ZM11.6036 14.9369L11.9571 14.5833L11.25 13.8762L10.8965 14.2298L11.25 14.5833L11.6036 14.9369ZM7.14646 12.1464L6.7929 12.5L7.50001 13.2071L7.85356 12.8535L7.50001 12.5L7.14646 12.1464ZM12.8536 7.85355L13.2071 7.49999L12.5 6.79289L12.1465 7.14644L12.5 7.49999L12.8536 7.85355ZM2.08334 12.0833L1.72979 12.4369L7.56312 18.2702L7.91668 17.9167L8.27023 17.5631L2.4369 11.7298L2.08334 12.0833ZM17.9167 7.91666L18.2702 7.56311L12.4369 1.72977L12.0833 2.08333L11.7298 2.43688L17.5631 8.27022L17.9167 7.91666ZM12.0833 2.08333L11.7298 1.72977L8.39646 5.06311L8.75001 5.41666L9.10356 5.77021L12.4369 2.43688L12.0833 2.08333ZM5.41668 8.74999L5.06312 8.39644L1.72979 11.7298L2.08334 12.0833L2.4369 12.4369L5.77023 9.10355L5.41668 8.74999ZM14.5833 11.25L14.9369 11.6035L18.2702 8.27022L17.9167 7.91666L17.5631 7.56311L14.2298 10.8964L14.5833 11.25ZM7.91668 17.9167L8.27023 18.2702L11.6036 14.9369L11.25 14.5833L10.8965 14.2298L7.56312 17.5631L7.91668 17.9167ZM7.50001 12.5L7.85356 12.8535L12.8536 7.85355L12.5 7.49999L12.1465 7.14644L7.14646 12.1464L7.50001 12.5Z" fill="currentColor"/>`,
   providers: `<path d="M10.0001 4.37562V2.875M13 4.37793V2.87793M7.00014 4.37793V2.875M10 17.1279V15.6279M13 17.1279V15.6279M7 17.1279V15.6279M15.625 13.0029H17.125M15.625 7.00293H17.125M15.625 10.0029H17.125M2.875 10.0029H4.375M2.875 13.0029H4.375M2.875 7.00293H4.375M4.375 4.37793H15.625V15.6279H4.375V4.37793ZM12.6241 10.0022C12.6241 11.4519 11.4488 12.6272 9.99908 12.6272C8.54934 12.6272 7.37408 11.4519 7.37408 10.0022C7.37408 8.55245 8.54934 7.3772 9.99908 7.3772C11.4488 7.3772 12.6241 8.55245 12.6241 10.0022Z" stroke="currentColor" stroke-linecap="square"/>`,
   models: `<path fill-rule="evenodd" clip-rule="evenodd" d="M17.5 10C12.2917 10 10 12.2917 10 17.5C10 12.2917 7.70833 10 2.5 10C7.70833 10 10 7.70833 10 2.5C10 7.70833 12.2917 10 17.5 10Z" stroke="currentColor"/>`,
+  "arrow-undo-down": `<path d="M4.08333 11.0859L1.75 8.7526L4.08333 6.41927M2.33333 8.7526L12.5417 8.7526L12.5417 3.21094L7 3.21094" stroke="currentColor" stroke-width="1" stroke-linecap="square"/>`,
 }
 
-export interface IconProps extends ComponentProps<"svg"> {
-  name: keyof typeof icons
-  size?: "small" | "normal" | "medium" | "large"
+const softIcons: Partial<Record<keyof typeof sharpIcons, Component<ComponentProps<"svg">>>> = {
+  archive: Archive,
+  "arrow-down-to-line": ArrowDownToLine,
+  "arrow-left": ArrowLeft,
+  "arrow-right": ArrowRight,
+  "arrow-up": ArrowUp,
+  "arrow-undo-down": Undo,
+  check: Check,
+  "check-small": Check,
+  "chevron-down": ChevronDown,
+  "chevron-left": ChevronLeft,
+  "chevron-right": ChevronRight,
+  checklist: ListChecks,
+  "circle-ban-sign": Ban,
+  "circle-check": CircleCheck,
+  "circle-x": X,
+  close: X,
+  "close-small": X,
+  code: Code,
+  "code-lines": CodeXml,
+  copy: Copy,
+  download: Download,
+  edit: SquarePen,
+  eye: Eye,
+  "folder-add-left": FolderPlus,
+  folder: FolderTree,
+  glasses: Glasses,
+  globe: (props) => <Globe {...props} strokeWidth={2.5} />,
+  hammer: Hammer,
+  github: GitFork,
+  help: CircleQuestionMark,
+  keyboard: Keyboard,
+  link: Link,
+  "magnifying-glass": Search,
+  "magnifying-glass-menu": Search,
+  menu: Menu,
+  "new-session": SquarePen,
+  "new-session-active": SquarePen,
+  "dot-grid": Ellipsis,
+  plus: Plus,
+  "plus-small": Plus,
+  prompt: SquarePen,
+  reset: Undo2,
+  review: Diff,
+  "review-active": Diff,
+  server: Server,
+  "settings-gear": Settings,
+  share: Share2,
+  sidebar: PanelLeft,
+  "sidebar-active": PanelLeftClose,
+  sliders: SlidersHorizontal,
+  status: LayoutPanelLeft,
+  "status-active": LayoutPanelLeft,
+  stop: SquareStop,
+  "square-arrow-top-right": SquareArrowOutUpRight,
+  terminal: Terminal,
+  "terminal-active": Terminal,
+  trash: Trash2,
+  warning: CircleAlert,
+  "window-cursor": MoveRight,
+  "layout-left": LayoutPanelLeft,
+  "layout-left-partial": PanelLeftOpen,
+  "layout-left-full": PanelLeftClose,
+  "layout-right": PanelRight,
+  "layout-right-partial": PanelRightOpen,
+  "layout-right-full": PanelRightClose,
+  "layout-bottom": PanelBottom,
+  "layout-bottom-partial": PanelBottomOpen,
+  "layout-bottom-full": PanelBottomClose,
+  "file-tree": ListTree,
 }
 
 export function Icon(props: IconProps) {
   const [local, others] = splitProps(props, ["name", "size", "class", "classList"])
-  const viewBox = () => (local.name === "magnifying-glass" ? "0 0 16 16" : "0 0 20 20")
+  const preset = useIconPreset()
+  const SoftIcon = softIcons[local.name as keyof typeof softIcons]
+  const sharpIcon = sharpIcons[local.name as keyof typeof sharpIcons]
+  const sharpPath = typeof sharpIcon === "string" ? sharpIcon : undefined
+  const SharpIcon = typeof sharpIcon === "string" ? undefined : sharpIcon
+  const softClass = () =>
+    [
+      local.class,
+      ...(Object.entries(local.classList ?? {})
+        .filter(([, value]) => !!value)
+        .map(([name]) => name) as string[]),
+    ]
+      .filter(Boolean)
+      .join(" ")
   return (
     <div data-component="icon" data-size={local.size || "normal"}>
-      <svg
-        data-slot="icon-svg"
-        classList={{
-          ...local.classList,
-          [local.class ?? ""]: !!local.class,
-        }}
-        fill="none"
-        viewBox={viewBox()}
-        innerHTML={icons[local.name as keyof typeof icons]}
-        aria-hidden="true"
-        {...others}
-      />
+      {shouldUseSoftIcon(preset(), local.name) && SoftIcon ? (
+        <SoftIcon
+          data-slot="icon-svg"
+          class={softClass()}
+          aria-hidden="true"
+          {...others}
+        />
+      ) : SharpIcon ? (
+        <SharpIcon
+          data-slot="icon-svg"
+          classList={{
+            ...local.classList,
+            [local.class ?? ""]: !!local.class,
+          }}
+          aria-hidden="true"
+          {...others}
+        />
+      ) : (
+        <svg
+          data-slot="icon-svg"
+          classList={{
+            ...local.classList,
+            [local.class ?? ""]: !!local.class,
+          }}
+          fill="none"
+          viewBox={getIconViewBox(local.name)}
+          innerHTML={sharpPath}
+          aria-hidden="true"
+          {...others}
+        />
+      )}
     </div>
   )
 }

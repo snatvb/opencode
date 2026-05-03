@@ -45,8 +45,8 @@ import { Checkbox } from "./checkbox"
 import { DiffChanges } from "./diff-changes"
 import { Markdown } from "./markdown"
 import { ImagePreview } from "./image-preview"
-import { getDirectory as _getDirectory, getFilename } from "@opencode-ai/shared/util/path"
-import { checksum } from "@opencode-ai/shared/util/encode"
+import { getDirectory as _getDirectory, getFilename } from "@opencode-ai/core/util/path"
+import { checksum } from "@opencode-ai/core/util/encode"
 import { Tooltip } from "./tooltip"
 import { IconButton } from "./icon-button"
 import { Spinner } from "./spinner"
@@ -264,6 +264,7 @@ function getDirectory(path: string | undefined) {
 }
 
 import type { IconProps } from "./icon"
+import { getToolIcon } from "./tool-icon"
 
 export type ToolInfo = {
   icon: IconProps["name"]
@@ -290,12 +291,9 @@ const agentPalette = [
   "var(--icon-agent-plan-base)",
   "var(--syntax-info)",
   "var(--syntax-success)",
-  "var(--syntax-warning)",
   "var(--syntax-property)",
   "var(--syntax-constant)",
   "var(--text-diff-add-base)",
-  "var(--text-diff-delete-base)",
-  "var(--icon-warning-base)",
 ]
 
 function tone(name: string) {
@@ -334,13 +332,13 @@ export function getToolInfo(tool: string, input: any = {}): ToolInfo {
       }
     case "glob":
       return {
-        icon: "magnifying-glass-menu",
+        icon: getToolIcon(tool),
         title: i18n.t("ui.tool.glob"),
         subtitle: input.pattern,
       }
     case "grep":
       return {
-        icon: "magnifying-glass-menu",
+        icon: getToolIcon(tool),
         title: i18n.t("ui.tool.grep"),
         subtitle: input.pattern,
       }
@@ -352,14 +350,8 @@ export function getToolInfo(tool: string, input: any = {}): ToolInfo {
       }
     case "websearch":
       return {
-        icon: "window-cursor",
+        icon: getToolIcon(tool),
         title: i18n.t("ui.tool.websearch"),
-        subtitle: input.query,
-      }
-    case "codesearch":
-      return {
-        icon: "code",
-        title: i18n.t("ui.tool.codesearch"),
         subtitle: input.query,
       }
     case "task": {
@@ -375,7 +367,7 @@ export function getToolInfo(tool: string, input: any = {}): ToolInfo {
     }
     case "bash":
       return {
-        icon: "console",
+        icon: getToolIcon(tool),
         title: i18n.t("ui.tool.shell"),
         subtitle: input.description,
       }
@@ -416,7 +408,7 @@ export function getToolInfo(tool: string, input: any = {}): ToolInfo {
       }
     default:
       return {
-        icon: "mcp",
+        icon: getToolIcon(tool),
         title: tool,
       }
   }
@@ -908,9 +900,12 @@ function ContextToolGroup(props: { parts: ToolPart[]; busy?: boolean }) {
     <Collapsible open={open()} onOpenChange={setOpen} variant="ghost" class="tool-collapsible">
       <Collapsible.Trigger>
         <div data-component="context-tool-group-trigger">
+          <span data-slot="context-tool-group-icon" class="shrink-0 text-icon-base">
+            <Icon name="magnifying-glass" size="small" />
+          </span>
           <span
             data-slot="context-tool-group-title"
-            class="min-w-0 flex items-center gap-2 text-14-medium text-text-strong"
+            class="min-w-0 flex items-center gap-2 text-12-medium text-text-strong"
           >
             <span data-slot="context-tool-group-label" class="shrink-0">
               <ToolStatusTitle
@@ -1697,35 +1692,9 @@ ToolRegistry.register({
     return (
       <BasicTool
         {...props}
-        icon="window-cursor"
+        icon={getToolIcon("websearch")}
         trigger={{
           title: i18n.t("ui.tool.websearch"),
-          subtitle: query(),
-          subtitleClass: "exa-tool-query",
-        }}
-      >
-        <ExaOutput output={props.output} />
-      </BasicTool>
-    )
-  },
-})
-
-ToolRegistry.register({
-  name: "codesearch",
-  render(props) {
-    const i18n = useI18n()
-    const query = createMemo(() => {
-      const value = props.input.query
-      if (typeof value !== "string") return ""
-      return value
-    })
-
-    return (
-      <BasicTool
-        {...props}
-        icon="code"
-        trigger={{
-          title: i18n.t("ui.tool.codesearch"),
           subtitle: query(),
           subtitleClass: "exa-tool-query",
         }}
@@ -1787,7 +1756,7 @@ ToolRegistry.register({
                 <Spinner />
               </span>
             </Show>
-            <span data-component="task-tool-title" style={{ color: tone() ?? "var(--text-strong)" }}>
+            <span data-component="task-tool-title" style={{ color: tone() ?? "var(--text-interactive-base)" }}>
               {title()}
             </span>
             <Show when={subtitle()}>
@@ -1806,6 +1775,7 @@ ToolRegistry.register({
     return (
       <BasicTool
         icon="task"
+        hideIcon
         status={props.status}
         trigger={trigger()}
         hideDetails
@@ -1873,9 +1843,7 @@ ToolRegistry.register({
             </Tooltip>
           </div>
           <div data-slot="bash-scroll" data-scrollable>
-            <pre data-slot="bash-pre">
-              <code>{text()}</code>
-            </pre>
+            <Markdown text={"~~~~~~~bash\n" + text() + "\n~~~~~~~"} />
           </div>
         </div>
       </BasicTool>

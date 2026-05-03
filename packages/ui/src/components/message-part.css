@@ -131,7 +131,8 @@
     word-break: break-word;
     overflow: hidden;
     background: var(--surface-base);
-    border: 1px solid var(--border-weak-base);
+    border: none;
+    box-shadow: var(--shadow-user-message);
     padding: 8px 12px;
     border-radius: 6px;
 
@@ -359,9 +360,43 @@
   width: 100%;
   border: 1px solid var(--border-weak-base);
   border-radius: 6px;
-  background: transparent;
+  background: var(--background-base);
   position: relative;
   overflow: hidden;
+
+  [data-component="markdown"] {
+    width: 100%;
+    min-width: 0;
+
+    pre {
+      margin: 0;
+      padding: 0;
+      background-color: transparent !important;
+      border: none !important;
+    }
+
+    .shiki {
+      padding: 12px;
+      border: none;
+      border-radius: 0;
+      background-color: transparent !important;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .shiki code {
+      font-family: var(--font-family-mono);
+      font-feature-settings: var(--font-family-mono--font-feature-settings);
+      font-size: 13px;
+      line-height: var(--line-height-large);
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  [data-slot="markdown-copy-button"] {
+    display: none !important;
+  }
 
   [data-slot="bash-copy"] {
     position: absolute;
@@ -370,6 +405,7 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.15s ease;
+    z-index: 10;
   }
 
   &:hover [data-slot="bash-copy"],
@@ -399,19 +435,6 @@
     }
   }
 
-  [data-slot="bash-pre"] {
-    margin: 0;
-    padding: 12px;
-  }
-
-  [data-slot="bash-pre"] code {
-    font-family: var(--font-family-mono);
-    font-feature-settings: var(--font-family-mono--font-feature-settings);
-    font-size: 13px;
-    line-height: var(--line-height-large);
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-  }
 }
 
 [data-component="edit-trigger"],
@@ -437,7 +460,7 @@
     gap: 8px;
     min-width: 0;
     font-family: var(--font-family-sans);
-    font-size: 14px;
+    font-size: 12px;
     font-style: normal;
     font-weight: var(--font-weight-medium);
     line-height: var(--line-height-large);
@@ -481,6 +504,7 @@
     flex-grow: 1;
     min-width: 0;
     font-weight: var(--font-weight-regular);
+    font-size: 12px;
   }
 
   [data-slot="message-part-directory"] {
@@ -490,6 +514,7 @@
     white-space: nowrap;
     direction: rtl;
     text-align: left;
+    font-size: 12px;
   }
 
   [data-slot="message-part-filename"] {
@@ -626,12 +651,21 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 0px;
+  gap: 8px;
   cursor: default;
+
+  [data-slot="context-tool-group-icon"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    line-height: 0;
+  }
 
   [data-slot="context-tool-group-title"] {
     flex-shrink: 1;
     min-width: 0;
+    font-size: 12px;
   }
 
   [data-slot="collapsible-arrow"] {
@@ -1207,7 +1241,6 @@
 
   [data-slot="apply-patch-filename"] {
     color: var(--text-strong);
-    flex: 1 1 auto;
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;

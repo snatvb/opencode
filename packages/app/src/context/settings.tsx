@@ -3,6 +3,8 @@ import { createEffect, createMemo } from "solid-js"
 import { createSimpleContext } from "@opencode-ai/ui/context"
 import { persisted } from "@/utils/persist"
 
+export type IconPreset = "sharp" | "soft"
+
 export interface NotificationSettings {
   agent: boolean
   permissions: boolean
@@ -31,6 +33,7 @@ export interface Settings {
     showReasoningSummaries: boolean
     shellToolPartsExpanded: boolean
     editToolPartsExpanded: boolean
+    showSessionProgressBar: boolean
   }
   updates: {
     startup: boolean
@@ -40,6 +43,8 @@ export interface Settings {
     mono: string
     sans: string
     terminal: string
+    agentProgressIndicator: "border" | "bar"
+    iconPreset: IconPreset
   }
   keybinds: Record<string, string>
   permissions: {
@@ -115,6 +120,7 @@ const defaultSettings: Settings = {
     showReasoningSummaries: false,
     shellToolPartsExpanded: false,
     editToolPartsExpanded: false,
+    showSessionProgressBar: true,
   },
   updates: {
     startup: true,
@@ -124,6 +130,8 @@ const defaultSettings: Settings = {
     mono: "",
     sans: "",
     terminal: "",
+    agentProgressIndicator: "bar",
+    iconPreset: "soft",
   },
   keybinds: {},
   permissions: {
@@ -227,6 +235,13 @@ export const { use: useSettings, provider: SettingsProvider } = createSimpleCont
         setEditToolPartsExpanded(value: boolean) {
           setStore("general", "editToolPartsExpanded", value)
         },
+        showSessionProgressBar: withFallback(
+          () => store.general?.showSessionProgressBar,
+          defaultSettings.general.showSessionProgressBar,
+        ),
+        setShowSessionProgressBar(value: boolean) {
+          setStore("general", "showSessionProgressBar", value)
+        },
       },
       updates: {
         startup: withFallback(() => store.updates?.startup, defaultSettings.updates.startup),
@@ -250,6 +265,17 @@ export const { use: useSettings, provider: SettingsProvider } = createSimpleCont
         terminalFont: withFallback(() => store.appearance?.terminal, defaultSettings.appearance.terminal),
         setTerminalFont(value: string) {
           setStore("appearance", "terminal", value.trim() ? value : "")
+        },
+        agentProgressIndicator: withFallback(
+          () => store.appearance?.agentProgressIndicator,
+          defaultSettings.appearance.agentProgressIndicator,
+        ),
+        setAgentProgressIndicator(value: "border" | "bar") {
+          setStore("appearance", "agentProgressIndicator", value)
+        },
+        iconPreset: withFallback(() => store.appearance?.iconPreset, defaultSettings.appearance.iconPreset),
+        setIconPreset(value: IconPreset) {
+          setStore("appearance", "iconPreset", value)
         },
       },
       keybinds: {
